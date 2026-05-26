@@ -18,6 +18,7 @@ services:
       POSTGRES_DB: weatherdb
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   mongo_db:
     image: mongo
     volumes:
