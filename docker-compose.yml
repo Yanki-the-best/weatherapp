@@ -1,5 +1,29 @@
 services:
   app:
     build: .
+    depends_on:
+      - postgres_db
+      - mongo_db
+    environment:
+      POSTGRES_URL: postgresql://user:password@postgres_db:5432/weatherdb
+      MONGO_URL: mongodb://mongo_db:27017
     ports:
       - "2026:80"
+    
+  postgres_db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: weatherdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  mongo_db:
+    image: mongo
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  postgres_data: 
+  mongo_data: 
